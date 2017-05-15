@@ -26,9 +26,8 @@
 })({
   1: [function (require, module, exports) {
     var pathtoregexp = require('path-to-regexp')
-
-    window.baseUtilspathtoregexp = pathtoregexp;
-
+    window.baseUtils = window.baseUtils || {};
+    window.baseUtils.pathtoregexp = pathtoregexp;
   }, {
     'path-to-regexp': 3
   }],
