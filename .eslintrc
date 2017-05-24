@@ -100,7 +100,7 @@
     "page": true,
     "baseUtils": true,
     "HTMLImports": true,
-    "ev_navigate_to": true,
+    "oe_navigate_to": true,
     "I18nMsg": true,
     "Platform": true,
     "Promise": true,

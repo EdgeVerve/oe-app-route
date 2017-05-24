@@ -1,4 +1,4 @@
-<!-- 
+<!--
   ©2016-2017 EdgeVerve Systems Limited (a fully owned Infosys subsidiary),
   Bangalore, India. All Rights Reserved.
 -->
@@ -166,7 +166,7 @@ e.g.
       };
     }
 
-    window.ev_navigate_to = function (path, state) {
+    window.oe_navigate_to = function (path, state) {
       window.history.pushState(state, undefined, path);
       Polymer.Base.fire('location-changed', state, {
         node: window
@@ -178,8 +178,8 @@ e.g.
      * should continue to work as it is.
      */
     window.page = function (path) {
-      console.warn('page(...) call is depricated. Please use ev_navigate_to(...) instead.');
-      window.ev_navigate_to(path);
+      console.warn('page(...) call is depricated. Please use oe_navigate_to(...) instead.');
+      window.oe_navigate_to(path);
     };
 
     function decodeURLEncodedURIComponent(val) {
@@ -501,7 +501,7 @@ e.g.
                           }
                           path = path.replace(chunk, value);
                         });
-                        ev_navigate_to(path);
+                        oe_navigate_to(path, e.detail);
                       });
                     }
                   });
@@ -514,10 +514,18 @@ e.g.
                 self.__setParamsOnElement(route.element, params, route);
               };
 
+              var isElementLoaded = Polymer.telemetry.registrations.find(function (e) {  // eslint-disable-line no-loop-func
+                return e.is === route.name;
+              });
+
               if (route.type === 'meta') {
                 route.element = document.createElement('oe-meta-component');
                 params.templateUrl = route.import;
                 params.metadataName = params.formname || route.name;
+                appendElement();
+              } else if (isElementLoaded) {
+                route.elementName = route.name;
+                route.element = document.createElement(route.elementName);
                 appendElement();
               } else if (url) {
                 if (baseUtils.uibaseroute) {
