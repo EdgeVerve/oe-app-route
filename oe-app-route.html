@@ -5,7 +5,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../oe-ajax/oe-ajax.html">
 <link rel="import" href="../app-route/app-location.html">
-<link rel="import" href="../oe-utils/base-utils.js">
+<link rel="import" href="../oe-utils/oe-utils.js">
 
 <script src="scripts/pathtoregexp.js"></script>
 
@@ -261,7 +261,7 @@ e.g.
 
         if (!this.routesList) {
           if (this.configUrl) {
-            this.$.ajax.url = baseUtils.geturl(this.configUrl) + '?filter=' + JSON.stringify(filter);
+            this.$.ajax.url = OEUtils.geturl(this.configUrl) + '?filter=' + JSON.stringify(filter);
             this.$.ajax.generateRequest();
           }
         }
@@ -275,7 +275,7 @@ e.g.
       handleRoutesListChange: function (newData) { //eslint-disable-line no-unused-vars
         this.routesList.forEach(function (route) {
           route.keys = [];
-          route.regexp = baseUtils.pathtoregexp(route.path, route.keys, false, false);
+          route.regexp = OEUtils.pathtoregexp(route.path, route.keys, false, false);
         });
         this.routesList.sort(function (l, r) {
           var lscore = 0;
@@ -298,7 +298,7 @@ e.g.
           }
         };
         if (this.configUrl) {
-          this.$.ajax.url = baseUtils.geturl(this.configUrl) + '?filter=' + JSON.stringify(filter);
+          this.$.ajax.url = OEUtils.geturl(this.configUrl) + '?filter=' + JSON.stringify(filter);
           this.$.ajax.generateRequest();
         }
       },
@@ -528,8 +528,8 @@ e.g.
                 route.element = document.createElement(route.elementName);
                 appendElement();
               } else if (url) {
-                if (baseUtils.uibaseroute) {
-                  url = self._joinUrlSegments(baseUtils.uibaseroute, url);
+                if (OEUtils.uibaseroute) {
+                  url = self._joinUrlSegments(OEUtils.uibaseroute, url);
                 }
                 self.importHref(url, function (e) { // eslint-disable-line no-loop-func
                   //When 'import' is a vulcanized file,
@@ -551,7 +551,7 @@ e.g.
                       while (e.target.import.head.querySelectorAll('style[scoped]').length > 0) {
                         route.element.appendChild(e.target.import.head.querySelectorAll('style[scoped]')[0]);
                       }
-                      baseUtils.scopeStyles && baseUtils.scopeStyles(route.element);
+                      OEUtils.scopeStyles && OEUtils.scopeStyles(route.element);
                     }
                   }
                   appendElement();

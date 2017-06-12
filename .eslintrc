@@ -98,7 +98,7 @@
     "fixture": true,
     "sinon": true,
     "page": true,
-    "baseUtils": true,
+    "OEUtils": true,
     "HTMLImports": true,
     "oe_navigate_to": true,
     "I18nMsg": true,
