@@ -72,6 +72,58 @@ e.g.
 >  - The element-name can be made dynamic by introducing **elmentName** as path parameter. e.g. */show/:elementName*
 >  - **meta** : route types are not supported anymore.
 > Use `model-ui-generator` as a mediator element for replacing old `meta` type of routes.
+
+
+#### Sharing data between SPA routes,
+
+##### Through URL placeholders
+
+Consider two UI Routes having following URL patterns
+
+```
+{
+  path: '/view-orders',
+	type: 'elem',
+	name:'order-list'
+}
+			
+{
+  path: '/view-order/:orderId',
+	type: 'elem',
+	name: 'order-details'
+}
+```
+**order-details** component has a property _orderId_.
+
+(a) Place an ```<a href="/view-order/123">``` on order-list component (through a dom-repeat sort). When user clicks on this link SPA navigation will take user to <order-details> and orderId property will be set to "123" automatically.
+
+(b) Programatically call ```ev_navigate_to("/view-order/123")``` and this will have same effect as above.
+
+##### Passing entire object data
+Sometimes you may want to pass entire javascript object and passing it through URL may not be possible.
+Consider two UI Routes having following URL patterns
+
+```
+{
+  path: '/view-orders',
+	type: 'elem',
+	name:'order-list'
+}
+			
+{
+  path: '/view-order/:orderId',
+  type: 'elem',
+  name: 'order-details'
+}
+```
+
+**<order-details>** component has a property _order_ which should be set directly.
+
+Programatically call ```ev_navigate_to("/view-order/123", {order:my_order_object});```
+
+This will navigate user to "/view-order/123", show **<order-details>** component and 
+set order property to passed in my_oder_object.
+
 -->
 
 <dom-module id="oe-app-route">
