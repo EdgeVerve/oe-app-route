@@ -341,7 +341,9 @@ set order property to passed in my_oder_object.
           rscore += 1 * (r.path.match(/\:/g) || []).length;
           return lscore - rscore;
         });
-
+        if (this.pendingRouteChange) {
+          this.handleRouteChange();
+        }
       },
       refresh: function () {
         var filter = {
@@ -356,9 +358,6 @@ set order property to passed in my_oder_object.
       },
       _routesFetched: function (e) {
         this.set('routesList', e.detail.response);
-        if (this.pendingRouteChange) {
-          this.handleRouteChange();
-        }
       },
       _routesFetchError: function (e) {
         console.error(this.is, ': unable to fetch route details from ', this.configUrl, '[' + e.detail.request.statusText +
