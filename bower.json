@@ -4,7 +4,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "app-route": "PolymerElements/app-route#^1.0.1",
-    "oe-ajax": "^1.0.0",
+    "oe-ajax": "^1.1.0",
     "oe-utils": "^1.0.0"
   },
   "devDependencies": {
