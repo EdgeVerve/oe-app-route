@@ -255,7 +255,10 @@ set order property to passed in my_oder_object.
         /* url for route definitions*/
         configUrl: {
           type: String,
-          value: '/api/UIRoutes'
+          value: function(){
+		    var restApiRoot = (window.OEUtils && window.OEUtils.restApiRoot) ? window.OEUtils.restApiRoot : '/api';
+		    return restRootApi + '/UIRoutes';
+		  }
         },
         noMatch: {
           type: String
