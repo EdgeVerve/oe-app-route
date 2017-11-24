@@ -1,0 +1,28 @@
+<dom-module id="test-elem">
+    <template>
+        <style>
+            :host{
+                position:relative;
+                display:block;
+                box-sizing:border-box;
+            }
+        </style>
+        <div class="component-container">
+        </div>
+    </template>
+    <script>
+        setTimeout(function(){
+            Polymer({
+                is:"test-elem",
+                behaviors:[],
+                listeners:{},
+                attached:function(){
+                    this.fire('meta-attached');
+                    setTimeout(function(){
+                        this.fire('success-test',{'name':'test'})
+                    }.bind(this),100);
+                }
+            })
+        },1000)
+    </script>
+</dom-module>
