@@ -24,7 +24,8 @@ Any unauthorized reproduction, storage, transmission in any form or by any means
   <script src="../../fakerest/dist/FakeRest.min.js"></script>
 
   <link rel="import" href="../oe-app-route.html">
-  <link rel="import" href="../iron-pages.html">
+  <link rel="import" href="../../iron-pages/iron-pages.html">
+  <link rel="import" href="../../paper-button/paper-button.html">
 
 </head>
 
@@ -49,14 +50,28 @@ Any unauthorized reproduction, storage, transmission in any form or by any means
           "name": "receipts",
           "path": "/receipts",
           "import": "receipts-partial.html"
-      },
-      {
+        },
+        {
           "type": "elem",
           "name": "paper-button",
           "path": "/button",
           "import": "../paper-button/paper-button.html"
-      }];
-
+        }, {
+          "type": "elem",
+          "name": "test-elem",
+          "path": "/test",
+          "import": "test-elem.html",
+          "transitions": [{
+            "event": "success-test",
+            "route": "/button"
+          }]
+        }, {
+          "type": "page",
+          "path": "/page2",
+          "import": "dummy-page.html"
+        }
+      ];
+      OEUtils.uibaseroute = OEUtils.uibaseroute || '/components/oe-app-route/test/'
       setup(function () {
 
         xhr = sinon.useFakeXMLHttpRequest();
@@ -79,9 +94,60 @@ Any unauthorized reproduction, storage, transmission in any form or by any means
       });
 
       test('Testing initial setup', function (done) {
-        flush(function(){
-          assert.equal(ele.routesList.length,2);
+        flush(function () {
+          assert.equal(ele.routesList.length, UIRoutes.length);
           done();
+        })
+      })
+
+      test('Route change for elem type of existing element', function (done) {
+        var routeListener = function (e) {
+          assert.equal(ele._target.selectedItem.is, 'paper-button');
+          document.removeEventListener('oe-route-change', routeListener);
+          done();
+        }
+        document.addEventListener('oe-route-change', routeListener)
+        flush(function () {
+          assert.equal(ele.routesList.length, UIRoutes.length);
+          ele.set('route', {
+            "type": "elem",
+            "name": "paper-button",
+            "path": "/button",
+            "import": "../paper-button/paper-button.html"
+          });
+        })
+      })
+      test('Route change for elem type of new element', function (done) {
+        var routeListener = function (e) {
+          assert.equal(ele._target.selectedItem.is, 'test-elem');
+          document.removeEventListener('oe-route-change', routeListener);
+          done();
+        }
+        document.addEventListener('oe-route-change', routeListener)
+        flush(function () {
+          assert.equal(ele.routesList.length, UIRoutes.length);
+          ele.set('route', {
+            "type": "elem",
+            "name": "test-elem",
+            "path": "/test",
+            "import": "test-elem.html"
+          });
+        })
+      })
+      test('Route change for page type', function (done) {
+        flush(function () {
+          assert.equal(ele.routesList.length, UIRoutes.length);
+          ele.set('route', {
+            "type": "page",
+            "path": "/page2",
+            "import": "dummy-page.html"
+          });
+          flush(function () {
+            setTimeout(function () {
+              assert.equal(ele._target.selectedItem.querySelector('label').innerText, "Page 2");
+              done();
+            }, 1000)
+          })
         })
       })
     });
