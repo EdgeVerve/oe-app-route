@@ -43,114 +43,116 @@ Any unauthorized reproduction, storage, transmission in any form or by any means
 
   <script>
     suite('oe-app-route', function () {
-      var server;
-      var xhr, requests, ele;
-      var UIRoutes = [{
-          "type": "page",
-          "name": "receipts",
-          "path": "/receipts",
-          "import": "receipts-partial.html"
-        },
-        {
-          "type": "elem",
-          "name": "paper-button",
-          "path": "/button",
-          "import": "../paper-button/paper-button.html"
-        }, {
-          "type": "elem",
-          "name": "test-elem",
-          "path": "/test",
-          "import": "test-elem.html",
-          "transitions": [{
-            "event": "success-test",
-            "route": "/button"
-          }]
-        }, {
-          "type": "page",
-          "path": "/page2",
-          "import": "dummy-page.html"
-        }
-      ];
-      OEUtils.uibaseroute = OEUtils.uibaseroute || '/components/oe-app-route/test/'
-      setup(function () {
+          var server;
+          var xhr, requests, ele;
+          var UIRoutes = [{
+              "type": "page",
+              "name": "receipts",
+              "path": "/receipts",
+              "import": "receipts-partial.html"
+            },
+            {
+              "type": "elem",
+              "name": "paper-button",
+              "path": "/button",
+              "import": "../paper-button/paper-button.html"
+            }, {
+              "type": "elem",
+              "name": "test-elem",
+              "path": "/test",
+              "import": "test-elem.html",
+              "transitions": [{
+                "event": "success-test",
+                "route": "/button"
+              }]
+            }, {
+              "type": "page",
+              "path": "/page2",
+              "import": "dummy-page.html"
+            }
+          ];
+          
+          setup(function (done) {
 
-        xhr = sinon.useFakeXMLHttpRequest();
-        requests = [];
-        xhr.onCreate = function (req) {
-          requests.push(req);
-        };
+            xhr = sinon.useFakeXMLHttpRequest();
+            requests = [];
+            xhr.onCreate = function (req) {
+              requests.push(req);
+            };
 
-        server = sinon.fakeServer.create();
-        server.autoRespond = true;
-        server.respondImmediately = true;
-        server.respondWith('GET', /\/api\/UIRoutes/, function (req) {
-          req.respond(200, 'application/json', JSON.stringify(UIRoutes));
-        });
-        ele = fixture('basic');
-      });
-      teardown(function () {
-        xhr.restore();
-        server.restore();
-      });
-
-      test('Testing initial setup', function (done) {
-        flush(function () {
-          assert.equal(ele.routesList.length, UIRoutes.length);
-          done();
-        })
-      })
-
-      test('Route change for elem type of existing element', function (done) {
-        var routeListener = function (e) {
-          assert.equal(ele._target.selectedItem.is, 'paper-button');
-          document.removeEventListener('oe-route-change', routeListener);
-          done();
-        }
-        document.addEventListener('oe-route-change', routeListener)
-        flush(function () {
-          assert.equal(ele.routesList.length, UIRoutes.length);
-          ele.set('route', {
-            "type": "elem",
-            "name": "paper-button",
-            "path": "/button",
-            "import": "../paper-button/paper-button.html"
+            server = sinon.fakeServer.create();
+            server.autoRespond = true;
+            server.respondImmediately = true;
+            server.respondWith('GET', /\/api\/UIRoutes/, function (req) {
+              req.respond(200, 'application/json', JSON.stringify(UIRoutes));
+            });
+            setTimeout(function(){
+            OEUtils.uibaseroute = OEUtils.uibaseroute || '/components/oe-app-route/test/'
+                ele = fixture('basic');
+                done();
+            },1000)
           });
-        })
-      })
-      test('Route change for elem type of new element', function (done) {
-        var routeListener = function (e) {
-          assert.equal(ele._target.selectedItem.is, 'test-elem');
-          document.removeEventListener('oe-route-change', routeListener);
-          done();
-        }
-        document.addEventListener('oe-route-change', routeListener)
-        flush(function () {
-          assert.equal(ele.routesList.length, UIRoutes.length);
-          ele.set('route', {
-            "type": "elem",
-            "name": "test-elem",
-            "path": "/test",
-            "import": "test-elem.html"
+          teardown(function () {
+            xhr.restore();
+            server.restore();
           });
-        })
-      })
-      test('Route change for page type', function (done) {
-        flush(function () {
-          assert.equal(ele.routesList.length, UIRoutes.length);
-          ele.set('route', {
-            "type": "page",
-            "path": "/page2",
-            "import": "dummy-page.html"
-          });
-          flush(function () {
-            setTimeout(function () {
-              assert.equal(ele._target.selectedItem.querySelector('label').innerText, "Page 2");
+          test('Testing initial setup', function (done) {
+            flush(function () {
+              assert.equal(ele.routesList.length, UIRoutes.length);
               done();
-            }, 1000)
+            })
           })
-        })
-      })
-    });
+          test('Route change for elem type of existing element', function (done) {
+            var routeListener = function (e) {
+              assert.equal(ele._target.selectedItem.is, 'paper-button');
+              document.removeEventListener('oe-route-change', routeListener);
+              done();
+            }
+            document.addEventListener('oe-route-change', routeListener)
+            flush(function () {
+              assert.equal(ele.routesList.length, UIRoutes.length);
+              ele.set('route', {
+                "type": "elem",
+                "name": "paper-button",
+                "path": "/button",
+                "import": "../paper-button/paper-button.html"
+              });
+            })
+          })
+          test('Route change for elem type of new element', function (done) {
+            var routeListener = function (e) {
+              assert.equal(ele._target.selectedItem.is, 'test-elem');
+              document.removeEventListener('oe-route-change', routeListener);
+              done();
+            }
+            document.addEventListener('oe-route-change', routeListener)
+            flush(function () {
+              assert.equal(ele.routesList.length, UIRoutes.length);
+              ele.set('route', {
+                "type": "elem",
+                "name": "test-elem",
+                "path": "/test",
+                "import": "test-elem.html"
+              });
+            })
+          })
+          test('Route change for page type', function (done) {
+            flush(function () {
+              assert.equal(ele.routesList.length, UIRoutes.length);
+              ele.set('route', {
+                "type": "page",
+                "path": "/page2",
+                "import": "dummy-page.html"
+              });
+              flush(function () {
+                setTimeout(function () {
+                  assert.equal(ele._target.selectedItem.querySelector('label').innerText, "Page 2");
+                  done();
+                }, 1000)
+              })
+            })
+          })
+        });
 
   </script>
 
