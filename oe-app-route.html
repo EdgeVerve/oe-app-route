@@ -86,7 +86,7 @@ Consider two UI Routes having following URL patterns
 	type: 'elem',
 	name:'order-list'
 }
-			
+
 {
   path: '/view-order/:orderId',
 	type: 'elem',
@@ -109,7 +109,7 @@ Consider two UI Routes having following URL patterns
 	type: 'elem',
 	name:'order-list'
 }
-			
+
 {
   path: '/view-order/:orderId',
   type: 'elem',
@@ -121,7 +121,7 @@ Consider two UI Routes having following URL patterns
 
 Programatically call ```ev_navigate_to("/view-order/123", {order:my_order_object});```
 
-This will navigate user to "/view-order/123", show **<order-details>** component and 
+This will navigate user to "/view-order/123", show **<order-details>** component and
 set order property to passed in my_oder_object.
 
 -->
@@ -404,18 +404,18 @@ set order property to passed in my_oder_object.
         var hasState = state ? (Object.keys(state).length > 0 ? true : false) : false;
         if (el.set) {
           if (route.args) {
-            Object.keys(route.args).forEach(function (key) {
+            route.args && Object.keys(route.args).forEach(function (key) {
               el.set(key, route.args[key]);
             });
           }
 
           el.set('disableAutoFetch', hasState);
           if (state) {
-            Object.keys(state).forEach(function (key) {
+            state && Object.keys(state).forEach(function (key) {
               el.set(key, state[key]);
             });
           }
-          Object.keys(params).forEach(function (key) {
+          params && Object.keys(params).forEach(function (key) {
             var t = key === 'id' ? 'modelId' : key;
             el.set(t, params[key]);
           });
@@ -435,17 +435,17 @@ set order property to passed in my_oder_object.
         } else {
           el.addEventListener('meta-attached', function () {
             if (route.args) {
-              Object.keys(route.args).forEach(function (key) {
+              route.args && Object.keys(route.args).forEach(function (key) {
                 el.set(key, route.args[key]);
               });
             }
             el.set('disableAutoFetch', hasState);
             if (state) {
-              Object.keys(state).forEach(function (key) {
+              state && Object.keys(state).forEach(function (key) {
                 el.set(key, state[key]);
               });
             }
-            Object.keys(params).forEach(function (key) {
+            params && Object.keys(params).forEach(function (key) {
               var t = key === 'id' ? 'modelId' : key;
               el.set(t, params[key]);
             });
@@ -533,7 +533,7 @@ set order property to passed in my_oder_object.
               }
               var url = route.import;
               if (url) {
-                Object.keys(params).forEach(function (key) { // eslint-disable-line no-loop-func
+                params && Object.keys(params).forEach(function (key) { // eslint-disable-line no-loop-func
                   url = url.replace(':' + key, params[key]);
                 });
               }
