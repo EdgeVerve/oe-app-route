@@ -309,9 +309,9 @@ set order property to passed in my_oder_object.
 
         var filter = {};
         if (!this.fetchAllGroups) {
-          filter.where = {
-            group: this.group
-          };
+          filter.where = {};
+          if (this.group)
+            filter.where.group = this.group;
         }
 
         if (!this.routesList) {
@@ -351,9 +351,11 @@ set order property to passed in my_oder_object.
       refresh: function () {
         var filter = {
           where: {
-            group: this.group
           }
         };
+        if (this.group) {
+          filter.where.group = this.group;
+        }
         if (this.configUrl) {
           this.$.ajax.url = OEUtils.geturl(this.configUrl) + '?filter=' + JSON.stringify(filter);
           this.$.ajax.generateRequest();
