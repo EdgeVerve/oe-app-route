@@ -503,7 +503,7 @@ set order property to passed in my_oder_object.
 
         var path = this.route.path || '/';
         if (this.route && this.route.__queryParams && this.route.__queryParams.redirectTo) {
-          path = this.route.__queryParams.redirectTo;
+          path = decodeURIComponent(this.route.__queryParams.redirectTo);
           var subPath=window.OEUtils.subPath ||'';
           var newPath = subPath+path;
           history.replaceState(history.state, document.title, newPath);
