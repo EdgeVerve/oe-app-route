@@ -1,0 +1,34 @@
+{
+  "name": "oe-app-route",
+  "version": "2.0.0",
+  "description": "Wrapper element used to select/import the content to display based on route change",
+  "main": "oe-app-route.js",
+  "scripts": {
+    "test": "polymer test --module-resolution node --skip-selenium-install",
+    "lint": "eslint .",
+    "doc": "polymer analyze *.js > analysis.json"
+  },
+  "dependencies": {
+    "@polymer/app-route": "3.0.2",
+    "@polymer/polymer": "3.1.0",
+    "dynamic-import-polyfill": "git+https://github.com/uupaa/dynamic-import-polyfill.git",
+    "oe-ajax": "git+http://10.73.97.24/polymer-3/oe-ajax.git#master",
+    "oe-mixins": "git+http://10.73.97.24/polymer-3/oe-mixins.git#master",
+    "oe-utils": "git+http://10.73.97.24/polymer-3/oe-utils.git#master"
+  },
+  "devDependencies": {
+    "@polymer/iron-component-page": "4.0.1",
+    "@polymer/iron-demo-helpers": "3.0.2",
+    "@polymer/iron-pages": "3.0.1",
+    "@polymer/iron-test-helpers": "3.0.1",
+    "@webcomponents/webcomponentsjs": "2.2.7",
+    "fakerest": "2.1.0",
+    "oe-ui-forms": "git+http://10.73.97.24/polymer-3/oe-ui-forms.git#master",
+    "@polymer/test-fixture": "4.0.2",
+    "axe-core": "3.1.2",
+    "chai": "4.2.0",
+    "mocha": "5.2.0",
+    "sinon": "7.2.3",
+    "wct-mocha": "1.0.0"
+  }
+}

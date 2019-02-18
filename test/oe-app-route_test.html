@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>oe-app-route test</title>
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+  <script src="../node_modules/fakerest/dist/FakeRest.min.js"></script>
+  <script src="../node_modules/sinon/pkg/sinon.js"></script>
+
+
+  <script type="module" src="../oe-app-route.js"></script>
+  <!-- <script type="module" src="../node_modules/@polymer/iron-pages/iron-pages.js"></script> -->
+</head>
+
+<body>
+  <test-fixture id="basic">
+    <template>
+      <oe-app-route config-url="/api/UIRoutes">
+        <iron-pages route-target>
+        </iron-pages>
+      </oe-app-route>
+    </template>
+  </test-fixture>
+
+  <script type="module">
+    import {
+      DomApi
+    } from "@polymer/polymer/lib/legacy/polymer.dom";
+    import '@polymer/iron-pages/iron-pages';
+    import '@polymer/paper-icon-button/paper-icon-button';
+
+    var OEUtils = window.OEUtils || {};
+    OEUtils.metadataCache = OEUtils.metadataCache || {};
+    OEUtils.metadataCache["test-meta"] = {
+      'componentName': 'test-meta'
+    }
+    function getDom(node) {
+      return new DomApi(node);
+    }
+    suite('oe-app-route', function () {
+      var server;
+      var xhr, requests, ele;
+      var UIRoutes = [{
+          "type": "page",
+          "name": "receipts",
+          "path": "/receipts",
+          "import": "receipts-partial.html"
+        },
+        {
+          "type": "elem",
+          "name": "paper-icon-button",
+          "path": "/button",
+          "import": "../paper-icon-button/paper-icon-button.js",
+          "args":{
+            "raised":true
+          }
+        }, {
+          "type": "elem",
+          "name": "test-elem",
+          "path": "/test",
+          "import": "test-elem.js",
+          "transitions": [{
+            "event": "success-test",
+            "route": "/button"
+          }]
+        }, {
+          "type": "page",
+          "path": "/page2",
+          "import": "dummy-page.html"
+        },
+        {
+          "path": "/unknown",
+          "name": "test-element"
+        },
+        {
+          "type": "elem",
+          "name": "test-meta",
+          "path": "/meta-test",
+          "import": "test-meta.js",
+          "retainInstance":true,
+          "transitions": [{
+            "event": "success-test",
+            "route": "/button/{{name}}/{{id}}"
+          }]
+        }
+      ];
+
+      setup(function (done) {
+
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) {
+          requests.push(req);
+        };
+
+        server = sinon.fakeServer.create();
+        server.autoRespond = true;
+        server.respondImmediately = true;
+        server.respondWith('GET', /\/api\/UIRoutes/, function (req) {
+          req.respond(200, 'application/json', JSON.stringify(UIRoutes));
+        });
+        server.respondWith('GET', /dummy-page\.html/, function (req) {
+          req.respond(200, 'text', "<label>Page 2</label>");
+        });
+        setTimeout(function () {
+          OEUtils.uibaseroute = OEUtils.uibaseroute || '/components/oe-app-route/test/'
+          ele = fixture('basic');
+          done();
+        }, 1000)
+      });
+      // teardown(function () {
+      //   xhr.restore();
+      //   server.restore();
+      // });
+      test('Testing initial setup', function (done) {
+        flush(function () {
+          assert.equal(ele.routesList.length, UIRoutes.length);
+          done();
+        })
+      })
+      test('Route change for elem type of existing element', function (done) {
+        var routeListener = function (e) {
+          assert.equal(ele._target.selectedItem.is, 'paper-icon-button');
+          document.removeEventListener('oe-route-change', routeListener);
+          done();
+        }
+        document.addEventListener('oe-route-change', routeListener)
+        flush(function () {
+          assert.equal(ele.routesList.length, UIRoutes.length);
+          ele.set('route', {
+            "type": "elem",
+            "name": "paper-icon-button",
+            "path": "/button",
+            "import": "node_modules/@polymer/paper-icon-button/paper-icon-button"
+          });
+        })
+      })
+      test('Route change for elem type of new element', function (done) {
+        var routeListener = function (e) {
+          assert.equal(ele._target.selectedItem.is, 'test-elem');
+          ele.removeEventListener('app-drawer-reset-layout', routeListener);
+          done();
+        }
+        ele.addEventListener('app-drawer-reset-layout', routeListener)
+        flush(function () {
+          assert.equal(ele.routesList.length, UIRoutes.length);
+          ele.set('route', {
+            "type": "elem",
+            "name": "test-elem",
+            "path": "/test",
+            "import": "test-elem.js"
+          });
+        })
+      })
+      test('Route change for page type', function (done) {
+        flush(function () {
+          assert.equal(ele.routesList.length, UIRoutes.length);
+          var checkPageLoad = function(event){
+            assert.equal(ele._target.selectedItem.querySelector('label').innerText, "Page 2");
+            ele.removeEventListener('app-drawer-reset-layout',checkPageLoad);
+              done();
+          }
+          ele.addEventListener('app-drawer-reset-layout',checkPageLoad);
+          ele.set('route', {
+            "type": "page",
+            "path": "/page2",
+            "import": "dummy-page.html"
+          });
+        });
+      });
+      test('Route change for meta polymer element type', function (done) {
+        flush(function () {
+          assert.equal(ele.routesList.length, UIRoutes.length);
+          var routeListener = function (e) {
+            assert.equal(ele._target.selectedItem.is, 'test-meta');
+            ele.removeEventListener('app-drawer-reset-layout', routeListener);
+            ele.set('route', {
+              "path": "/unknown"
+            });
+            flush(function(){
+              assert.equal(ele._target.selectedItem.tagName.toLowerCase(), "test-element");
+              ele.set('route', {
+                "type": "elem",
+                "name": "test-meta",
+                "path": "/meta-test?elemType=meta",
+                "import": "test-meta.js"
+              });
+              flush(function(){
+                assert.equal(ele._target.selectedItem.is, 'test-meta');
+                done();
+              });
+            });
+          }
+          ele.addEventListener('app-drawer-reset-layout', routeListener)
+          ele.refresh();
+          ele.set('route', {
+            "type": "elem",
+            "name": "test-meta",
+            "path": "/meta-test?elemType=meta",
+            "import": "test-meta.js"
+          });
+        });
+      });
+    
+      test('Route change to invalid route', function (done) {
+        flush(function () {
+          ele.set('route', {
+            "path": "/not-valid/for-test"
+          });
+          flush(function(){
+            assert.equal(ele._target.selected, "/not-valid/for-test");
+            done();
+          });
+        });
+      });
+   });
+  </script>
+
+</body>
+
+</html>
