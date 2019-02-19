@@ -12,9 +12,9 @@
     "@polymer/app-route": "3.0.2",
     "@polymer/polymer": "3.1.0",
     "dynamic-import-polyfill": "git+https://github.com/uupaa/dynamic-import-polyfill.git",
-    "oe-ajax": "git+http://evgit/oecloud.io/oe-ajax.git#master",
-    "oe-mixins": "git+http://evgit/oecloud.io/oe-mixins.git#master",
-    "oe-utils": "git+http://evgit/oecloud.io/oe-utils.git#master"
+    "oe-ajax": "git+http://evgit/oecloud.io/oe-ajax.git#2.0.0",
+    "oe-mixins": "git+http://evgit/oecloud.io/oe-mixins.git#2.0.0",
+    "oe-utils": "git+http://evgit/oecloud.io/oe-utils.git#2.0.0"
   },
   "devDependencies": {
     "@polymer/iron-component-page": "4.0.1",
@@ -23,7 +23,7 @@
     "@polymer/iron-test-helpers": "3.0.1",
     "@webcomponents/webcomponentsjs": "2.2.7",
     "fakerest": "2.1.0",
-    "oe-ui-forms": "git+http://evgit/oecloud.io/oe-ui-forms.git#master",
+    "oe-ui-forms": "git+http://evgit/oecloud.io/oe-ui-forms.git#2.0.0",
     "@polymer/test-fixture": "4.0.2",
     "axe-core": "3.1.2",
     "chai": "4.2.0",
