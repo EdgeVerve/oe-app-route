@@ -7,7 +7,6 @@
 import { html, PolymerElement } from "@polymer/polymer/polymer-element.js";
 import { DomApi, flush } from "@polymer/polymer/lib/legacy/polymer.dom.js";
 import { OECommonMixin } from "oe-mixins/oe-common-mixin.js";
-import { importModule } from "dynamic-import-polyfill/importModule.js";
 import "@polymer/iron-location/iron-location.js";
 import "oe-ajax/oe-ajax.js";
 import "oe-utils/oe-utils.js";
@@ -556,7 +555,7 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
               if (OEUtils.uibaseroute) {
                 url = self._joinUrlSegments(OEUtils.uibaseroute, url);
               }
-              importModule(url).then(function(e) { 
+              import(url).then(function(e) { 
                 
                 if (route.name && route.name[0] === '!') {
                   route.elementName = route.name.substr(1);

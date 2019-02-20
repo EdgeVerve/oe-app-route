@@ -11,7 +11,6 @@
   "dependencies": {
     "@polymer/app-route": "3.0.2",
     "@polymer/polymer": "3.1.0",
-    "dynamic-import-polyfill": "git+https://github.com/uupaa/dynamic-import-polyfill.git",
     "oe-ajax": "git+http://evgit/oecloud.io/oe-ajax.git#master",
     "oe-mixins": "git+http://evgit/oecloud.io/oe-mixins.git#master",
     "oe-utils": "git+http://evgit/oecloud.io/oe-utils.git#master"
