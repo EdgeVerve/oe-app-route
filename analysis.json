@@ -1,0 +1,700 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "# oe-app-route\nThe `oe-app-route` element can be used to auto configure, application level client side routing.\n\n```html\n        <app-location route=\"{{route}}\"></app-location>\n        <oe-app-route route=\"{{route}}\" config-url=\"/data/UIRoutes.json\">\n            <iron-pages route-target>\n            </iron-pages>\n        </oe-app-route>\n```\nOR\n```html\n        <app-location route=\"{{route}}\"></app-location>\n        <oe-app-route route=\"{{route}}\" config-url=\"/api/UIRoutes\">\n        </oe-app-route>\n        <iron-pages route-target>\n        </iron-pages>\n```\n\n### Route Configuration\n\nconfig-url should return array of routes, each route object can have following properties\n\nProperty |              Description      | Default\n---------|-------------------------------|----------\n`name`   | route name                    |\n`path`   | relative url along with placeholders e.g. /customer/:id |\n`type`   | refer section on [type and import Properties](#type-and-import-properties)        |\n`import` | refer section on [type and import Properties](#type-and-import-properties)              |\n\ne.g.\n\n    [{\n        \"type\": \"page\",\n        \"name\": \"receipts\",\n        \"path\": \"/receipts\",\n        \"import\": \"receipts-partial.html\"\n    },\n    {\n        \"type\": \"elem\",\n        \"name\": \"cfe-loan-details\",\n        \"path\": \"/loan\",\n        \"import\": \"../business/cfe-loan-details.js\"\n    }]\n\n#### *type* and *import* Properties\n\n> The *type* property can have following values:\n>\n> - **page** : When route type is specified as page, the html data from *import* is fetched and added as innerHtml of target element.\n>  - If the *path* argument has any placeholders (e.g. execute/:modelName/:action) or actual URL has any query-string then the actual values can be referred in the imported html partial directly.\n> ``` html\n> <h2>Performing {{action}} on {{modelName}}</h2>\n> ```\n> - **elem** type of route places element specified by *name* property on hhe target. *import* property points to the location of element definition file.\n>  - If element is not registered yet, *import* is href-imported and *name* element is added.\n>  - Placeholders and query parameters are set on the element using `this.set` call. (**id** in path or query-parameters is added as **modelId** attribute)\n> ``` html\n> <owesome-element action=\"...\" model-name=\"...\"></owesome-element>\n> ```\n>  - The element-name can be made dynamic by introducing **elmentName** as path parameter. e.g. /show/:elementName\n>  - **meta** : route types are not supported anymore.\n> Use `model-ui-generator` as a mediator element for replacing old `meta` type of routes.\n\n\n#### Sharing data between SPA routes,\n\n##### Through URL placeholders\n\nConsider two UI Routes having following URL patterns\n\n```\n{\n  path: '/view-orders',\n\ttype: 'elem',\n\tname:'order-list'\n}\n\n{\n  path: '/view-order/:orderId',\n\ttype: 'elem',\n\tname: 'order-details'\n}\n```\n**order-details** component has a property _orderId_.\n\n(a) Place an ```<a href=\"/view-order/123\">``` on order-list component (through a dom-repeat sort). When user clicks on this link SPA navigation will take user to <order-details> and orderId property will be set to \"123\" automatically.\n\n(b) Programatically call ```oe_navigate_to(\"/view-order/123\")``` and this will have same effect as above.\n\n##### Passing entire object data\nSometimes you may want to pass entire javascript object and passing it through URL may not be possible.\nConsider two UI Routes having following URL patterns\n\n```\n{\n  path: '/view-orders',\n\ttype: 'elem',\n\tname:'order-list'\n}\n\n{\n  path: '/view-order/:orderId',\n  type: 'elem',\n  name: 'order-details'\n}\n```\n\n**<order-details>** component has a property _order_ which should be set directly.\n\nProgramatically call ```oe_navigate_to(\"/view-order/123\", {order:my_order_object});```\n\nThis will navigate user to \"/view-order/123\", show **<order-details>** component and\nset order property to passed in my_oder_object.",
+      "summary": "",
+      "path": "oe-app-route.js",
+      "properties": [
+        {
+          "name": "route",
+          "type": "Object | null | undefined",
+          "description": "Route object obtained from app-location containing\npath,query parameter etc.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 158,
+              "column": 6
+            },
+            "end": {
+              "line": 161,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "configUrl",
+          "type": "string | null | undefined",
+          "description": "Url from which the UIRoutes needs to be fetched ,\ndefaults to api call to UIRoutes model.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 167,
+              "column": 6
+            },
+            "end": {
+              "line": 173,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "noMatch",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 175,
+              "column": 6
+            },
+            "end": {
+              "line": 177,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "group",
+          "type": "string | null | undefined",
+          "description": "'group' query parameter for fetching UIRoutes",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 182,
+              "column": 6
+            },
+            "end": {
+              "line": 185,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "routesList",
+          "type": "Array | null | undefined",
+          "description": "List of routes fetched.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 190,
+              "column": 6
+            },
+            "end": {
+              "line": 192,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "tail",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 193,
+              "column": 6
+            },
+            "end": {
+              "line": 196,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "activeRoute",
+          "type": "Object | null | undefined",
+          "description": "Active route",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 201,
+              "column": 6
+            },
+            "end": {
+              "line": 208,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "{}"
+        },
+        {
+          "name": "activeGroup",
+          "type": "string | null | undefined",
+          "description": "Selected group name",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 213,
+              "column": 6
+            },
+            "end": {
+              "line": 218,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "fetchAllGroups",
+          "type": "boolean | null | undefined",
+          "description": "Ignore group property and fetch all Routes",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 223,
+              "column": 6
+            },
+            "end": {
+              "line": 226,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "connectedCallback",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 251,
+              "column": 2
+            },
+            "end": {
+              "line": 280,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "processInitialRoute",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 283,
+              "column": 2
+            },
+            "end": {
+              "line": 283,
+              "column": 27
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "handleRoutesListChange",
+          "description": "Processess the routeList for regexp and sort them with scores.\nCalls 'handleRouteChange' if there is a pending route change",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 290,
+              "column": 2
+            },
+            "end": {
+              "line": 310,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newData",
+              "type": "Array"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "refresh",
+          "description": "Refeshes the routeslist by fetching from the configUrl",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 315,
+              "column": 2
+            },
+            "end": {
+              "line": 327,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_routesFetched",
+          "description": "Sets the fetched routes into 'routesList'",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 333,
+              "column": 2
+            },
+            "end": {
+              "line": 335,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e",
+              "type": "Event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_routesFetchError",
+          "description": "Logs the error while fetching the routes list.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 341,
+              "column": 2
+            },
+            "end": {
+              "line": 344,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e",
+              "type": "Event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "__resetProperties",
+          "description": "",
+          "privacy": "private",
+          "sourceRange": {
+            "start": {
+              "line": 346,
+              "column": 2
+            },
+            "end": {
+              "line": 348,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "__match",
+          "description": "Checks if the given route object matches the path based on regexp,\nIf the regex matches populates the params object with matches created by regexp.",
+          "privacy": "private",
+          "sourceRange": {
+            "start": {
+              "line": 358,
+              "column": 2
+            },
+            "end": {
+              "line": 384,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "path",
+              "type": "string",
+              "description": "Path string to match"
+            },
+            {
+              "name": "route",
+              "type": "Object",
+              "description": "Route object containing the regexp"
+            },
+            {
+              "name": "params",
+              "type": "Object",
+              "description": "Params object that stores the matched parameters"
+            }
+          ],
+          "return": {
+            "type": "boolean",
+            "desc": "flag if the route matches the path"
+          }
+        },
+        {
+          "name": "__setParamsOnElement",
+          "description": "Sets the parameters on the element.",
+          "privacy": "private",
+          "sourceRange": {
+            "start": {
+              "line": 392,
+              "column": 2
+            },
+            "end": {
+              "line": 430,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "el",
+              "type": "HTMLElement",
+              "description": "Element to set the parameters on."
+            },
+            {
+              "name": "params",
+              "type": "Object",
+              "description": "Object of params to set on the element"
+            },
+            {
+              "name": "route",
+              "type": "Object",
+              "description": "Route object with arguments to set on the element"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_joinUrlSegments",
+          "description": "Merges pre and post url to return a merged url",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 438,
+              "column": 2
+            },
+            "end": {
+              "line": 448,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "pre",
+              "type": "string"
+            },
+            {
+              "name": "post",
+              "type": "string"
+            }
+          ],
+          "return": {
+            "type": "string",
+            "desc": "Merged Url"
+          }
+        },
+        {
+          "name": "handleRouteChange",
+          "description": "On route change matches the current path with the list of routes fetched to find the matching route.\nThen creates and appends the element (if not already created) and selects the element within the target component.\nAdditionally data sent in the query parameter or saved on the state is set on the element.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 455,
+              "column": 2
+            },
+            "end": {
+              "line": 633,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 138,
+          "column": 0
+        },
+        "end": {
+          "line": 634,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "name": "OeAppRoute",
+      "attributes": [
+        {
+          "name": "route",
+          "description": "Route object obtained from app-location containing\npath,query parameter etc.",
+          "sourceRange": {
+            "start": {
+              "line": 158,
+              "column": 6
+            },
+            "end": {
+              "line": 161,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "config-url",
+          "description": "Url from which the UIRoutes needs to be fetched ,\ndefaults to api call to UIRoutes model.",
+          "sourceRange": {
+            "start": {
+              "line": 167,
+              "column": 6
+            },
+            "end": {
+              "line": 173,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "no-match",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 175,
+              "column": 6
+            },
+            "end": {
+              "line": 177,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "group",
+          "description": "'group' query parameter for fetching UIRoutes",
+          "sourceRange": {
+            "start": {
+              "line": 182,
+              "column": 6
+            },
+            "end": {
+              "line": 185,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "routes-list",
+          "description": "List of routes fetched.",
+          "sourceRange": {
+            "start": {
+              "line": 190,
+              "column": 6
+            },
+            "end": {
+              "line": 192,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "tail",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 193,
+              "column": 6
+            },
+            "end": {
+              "line": 196,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "active-route",
+          "description": "Active route",
+          "sourceRange": {
+            "start": {
+              "line": 201,
+              "column": 6
+            },
+            "end": {
+              "line": 208,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "active-group",
+          "description": "Selected group name",
+          "sourceRange": {
+            "start": {
+              "line": 213,
+              "column": 6
+            },
+            "end": {
+              "line": 218,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "fetch-all-groups",
+          "description": "Ignore group property and fetch all Routes",
+          "sourceRange": {
+            "start": {
+              "line": 223,
+              "column": 6
+            },
+            "end": {
+              "line": 226,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "app-drawer-reset-layout",
+          "description": "Fired to notify the resetting of app-drawer .",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "oe-route-change",
+          "description": "Fired on the element that is displayed after route change.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "route-changed",
+          "description": "Fired when the `route` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "tail-changed",
+          "description": "Fired when the `tail` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "active-route-changed",
+          "description": "Fired when the `activeRoute` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "active-group-changed",
+          "description": "Fired when the `activeGroup` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "oe-app-route",
+      "mixins": [
+        "OECommonMixin"
+      ]
+    }
+  ]
+}
