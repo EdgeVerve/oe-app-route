@@ -545,10 +545,18 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
             self.__setParamsOnElement(route.element, params, route);
           };
 
+          var elementName = route.name;
+          params && Object.keys(params).forEach(function (key) { // eslint-disable-line no-loop-func
+            elementName = elementName.replace(':' + key, params[key]);
+          });
+          if (elementName && elementName[0] === '!') {
+            elementName = elementName.substr(1);
+          }
+
           if (route.type === 'elem' && url) {
-            var isElementLoaded = window.customElements.get(route.name);
+            var isElementLoaded = window.customElements.get(elementName);
             if (isElementLoaded) {
-              route.elementName = route.name;
+              route.elementName = elementName;
               route.element = document.createElement(route.elementName);
               appendElement();
             } else {
@@ -556,17 +564,11 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
                 url = self._joinUrlSegments(OEUtils.uibaseroute, url);
               }
               import(url).then(function(e) { 
-                
-                if (route.name && route.name[0] === '!') {
-                  route.elementName = route.name.substr(1);
-                } else {
-                  route.elementName = route.name;
-                }
+                route.elementName = elementName;
                 route.element = document.createElement(route.elementName);
                 appendElement();
               });
             }
-
           } else if (route.type === 'page' && url) {
             var ajax = this.$.htmlFetcher;
             if (OEUtils.uibaseroute) {
@@ -593,7 +595,7 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
             });
             ajax.generateRequest();
           } else {
-            route.elementName = route.name;
+            route.elementName = elementName;
             route.element = document.createElement(route.elementName);
             appendElement();
           }
