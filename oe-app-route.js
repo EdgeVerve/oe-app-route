@@ -4,9 +4,17 @@
  * Bangalore, India. All Rights Reserved.
  */
 
-import { html, PolymerElement } from "@polymer/polymer/polymer-element.js";
-import { DomApi, flush } from "@polymer/polymer/lib/legacy/polymer.dom.js";
-import { OECommonMixin } from "oe-mixins/oe-common-mixin.js";
+import {
+  html,
+  PolymerElement
+} from "@polymer/polymer/polymer-element.js";
+import {
+  DomApi,
+  flush
+} from "@polymer/polymer/lib/legacy/polymer.dom.js";
+import {
+  OECommonMixin
+} from "oe-mixins/oe-common-mixin.js";
 import "@polymer/iron-location/iron-location.js";
 import "oe-ajax/oe-ajax.js";
 import "oe-utils/oe-utils.js";
@@ -137,7 +145,7 @@ var OEUtils = window.OEUtils || {};
  */
 class OeAppRoute extends OECommonMixin(PolymerElement) {
   static get template() {
-    return html`
+    return html `
       <oe-ajax id="ajax" params='{}' headers='{}' handle-as="json" on-response="_routesFetched" on-error="_routesFetchError" debounce-duration="300"></oe-ajax>
       <oe-ajax id="htmlFetcher" method="get" params='{}' headers='{}' handle-as="text"></oe-ajax>
       <slot></slot>
@@ -280,7 +288,7 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
   }
 
 
-  processInitialRoute() { }
+  processInitialRoute() {}
 
   /**
    * Processess the routeList for regexp and sort them with scores.
@@ -300,7 +308,7 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
       lscore += 1 * (l.path.match(/\:/g) || []).length; //eslint-disable-line no-useless-escape
 
       rscore += 4 * (r.path.match(/\*/g) || []).length;
-      rscore += 2 * (r.path.match(/\?/g) || []).length; 
+      rscore += 2 * (r.path.match(/\?/g) || []).length;
       rscore += 1 * (r.path.match(/\:/g) || []).length; //eslint-disable-line no-useless-escape
       return lscore - rscore;
     });
@@ -314,8 +322,7 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
    */
   refresh() {
     var filter = {
-      where: {
-      }
+      where: {}
     };
     if (this.group) {
       filter.where.group = this.group;
@@ -422,7 +429,7 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
       } else {
         route.tail = null;
       }
-      if(el.fire){
+      if (el.fire) {
         el.fire('oe-route-change', route);
       }
     }
@@ -447,6 +454,14 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
     }
   }
 
+  importScreen(url) {
+    if (OEUtils.uibaseroute) {
+      url = this._joinUrlSegments(OEUtils.uibaseroute, url);
+    }
+
+    return import(url);
+  }
+
   /**
    * On route change matches the current path with the list of routes fetched to find the matching route.
    * Then creates and appends the element (if not already created) and selects the element within the target component.
@@ -466,8 +481,8 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
     var path = this.route.path || '/';
     if (this.route && this.route.__queryParams && this.route.__queryParams.redirectTo) {
       path = decodeURIComponent(this.route.__queryParams.redirectTo);
-      var subPath=window.OEUtils.subPath ||'';
-      var newPath = subPath+path;
+      var subPath = window.OEUtils.subPath || '';
+      var newPath = subPath + path;
       history.replaceState(history.state, document.title, newPath);
     }
 
@@ -516,7 +531,7 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
                   route.element.addEventListener(transition.event, function (e) {
                     var path = transition.route;
                     //extract
-                    var chunks = path.match(/{{[\w+\.]*}}/g);   //eslint-disable-line no-useless-escape
+                    var chunks = path.match(/{{[\w+\.]*}}/g); //eslint-disable-line no-useless-escape
                     chunks && chunks.forEach(function (chunk) {
                       var placeholder = chunk.substr(2, chunk.length - 4);
                       var value = self._deepValue(e.detail, placeholder);
@@ -531,8 +546,8 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
               });
             }
 
-            if(typeof route.element.set !== "function"){
-              route.element.addEventListener("meta-attached",function(){
+            if (typeof route.element.set !== "function") {
+              route.element.addEventListener("meta-attached", function () {
                 self.__setParamsOnElement(route.element, params, route);
               });
             }
@@ -563,7 +578,7 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
               if (OEUtils.uibaseroute) {
                 url = self._joinUrlSegments(OEUtils.uibaseroute, url);
               }
-              import(url).then(function(e) { 
+              self.importScreen(url).then(function (e) {
                 route.elementName = elementName;
                 route.element = document.createElement(route.elementName);
                 appendElement();
