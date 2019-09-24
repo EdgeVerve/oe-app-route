@@ -575,9 +575,6 @@ class OeAppRoute extends OECommonMixin(PolymerElement) {
               route.element = document.createElement(route.elementName);
               appendElement();
             } else {
-              if (OEUtils.uibaseroute) {
-                url = self._joinUrlSegments(OEUtils.uibaseroute, url);
-              }
               self.importScreen(url).then(function (e) {
                 route.elementName = elementName;
                 route.element = document.createElement(route.elementName);
