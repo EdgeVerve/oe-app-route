@@ -13,11 +13,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 158,
+              "line": 165,
               "column": 6
             },
             "end": {
-              "line": 161,
+              "line": 168,
               "column": 7
             }
           },
@@ -35,11 +35,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 167,
+              "line": 174,
               "column": 6
             },
             "end": {
-              "line": 173,
+              "line": 180,
               "column": 7
             }
           },
@@ -56,11 +56,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 175,
+              "line": 182,
               "column": 6
             },
             "end": {
-              "line": 177,
+              "line": 184,
               "column": 7
             }
           },
@@ -77,11 +77,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 182,
+              "line": 189,
               "column": 6
             },
             "end": {
-              "line": 185,
+              "line": 192,
               "column": 7
             }
           },
@@ -99,11 +99,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 190,
+              "line": 197,
               "column": 6
             },
             "end": {
-              "line": 192,
+              "line": 199,
               "column": 7
             }
           },
@@ -120,11 +120,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 193,
+              "line": 200,
               "column": 6
             },
             "end": {
-              "line": 196,
+              "line": 203,
               "column": 7
             }
           },
@@ -142,11 +142,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 201,
+              "line": 208,
               "column": 6
             },
             "end": {
-              "line": 208,
+              "line": 215,
               "column": 7
             }
           },
@@ -166,11 +166,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 213,
+              "line": 220,
               "column": 6
             },
             "end": {
-              "line": 218,
+              "line": 225,
               "column": 7
             }
           },
@@ -190,11 +190,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 223,
+              "line": 230,
               "column": 6
             },
             "end": {
-              "line": 226,
+              "line": 233,
               "column": 7
             }
           },
@@ -208,16 +208,217 @@
       ],
       "methods": [
         {
+          "name": "_deepValue",
+          "description": "Get the value from the 'obj' based on the 'path'.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../oe-mixins/oe-common-mixin.js",
+            "start": {
+              "line": 37,
+              "column": 4
+            },
+            "end": {
+              "line": 43,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "obj",
+              "type": "Object",
+              "description": "object to navigate"
+            },
+            {
+              "name": "path",
+              "type": "string",
+              "description": "path for navigation"
+            }
+          ],
+          "return": {
+            "type": "Any",
+            "desc": "value present in the given path of the obj."
+          },
+          "inheritedFrom": "OECommonMixin"
+        },
+        {
+          "name": "_deepSet",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../oe-mixins/oe-common-mixin.js",
+            "start": {
+              "line": 45,
+              "column": 4
+            },
+            "end": {
+              "line": 62,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "obj"
+            },
+            {
+              "name": "path"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "inheritedFrom": "OECommonMixin"
+        },
+        {
+          "name": "debounce",
+          "description": "Call `debounce` to collapse multiple requests for a named task into\none invocation which is made after the wait time has elapsed with\nno new request.  If no wait time is given, the callback will be called\nat microtask timing (guaranteed before paint).\n\n    debouncedClickAction(e) {\n      // will not call `processClick` more than once per 100ms\n      this.debounce('click', function() {\n       this.processClick();\n      } 100);\n    }",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "../oe-mixins/oe-common-mixin.js",
+            "start": {
+              "line": 88,
+              "column": 4
+            },
+            "end": {
+              "line": 92,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "jobName",
+              "type": "string",
+              "description": "String to identify the debounce job."
+            },
+            {
+              "name": "callback",
+              "type": "function (): void",
+              "description": "Function that is called (with `this`\n  context) when the wait time elapses."
+            },
+            {
+              "name": "wait",
+              "type": "number",
+              "description": "Optional wait time in milliseconds (ms) after the\n  last signal that must elapse before invoking `callback`"
+            }
+          ],
+          "return": {
+            "type": "!Object",
+            "desc": "Returns a debouncer object on which exists the\nfollowing methods: `isActive()` returns true if the debouncer is\nactive; `cancel()` cancels the debouncer if it is active;\n`flush()` immediately invokes the debounced callback if the debouncer\nis active."
+          },
+          "inheritedFrom": "OECommonMixin"
+        },
+        {
+          "name": "async",
+          "description": "Runs a callback function asynchronously.\n\nBy default (if no waitTime is specified), async callbacks are run at\nmicrotask timing, which will occur before paint.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "../oe-mixins/oe-common-mixin.js",
+            "start": {
+              "line": 106,
+              "column": 4
+            },
+            "end": {
+              "line": 109,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "callback",
+              "type": "!Function",
+              "description": "The callback function to run, bound to `this`."
+            },
+            {
+              "name": "waitTime",
+              "type": "number=",
+              "description": "Time to wait before calling the\n  `callback`.  If unspecified or 0, the callback will be run at microtask\n  timing (before paint)."
+            }
+          ],
+          "return": {
+            "type": "number",
+            "desc": "Handle that may be used to cancel the async job."
+          },
+          "inheritedFrom": "OECommonMixin"
+        },
+        {
+          "name": "cancelAsync",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "../oe-mixins/oe-common-mixin.js",
+            "start": {
+              "line": 120,
+              "column": 4
+            },
+            "end": {
+              "line": 122,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "handle"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "OECommonMixin"
+        },
+        {
+          "name": "fire",
+          "description": "Polymer fire function used to dispatch custom events",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "../oe-mixins/oe-common-mixin.js",
+            "start": {
+              "line": 131,
+              "column": 4
+            },
+            "end": {
+              "line": 143,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "type",
+              "type": "string",
+              "description": "event name"
+            },
+            {
+              "name": "detail",
+              "type": "Object",
+              "description": "data to be sent in the event"
+            },
+            {
+              "name": "options",
+              "type": "Object",
+              "description": "optionals options for the event {bubbles:Boolean,cancelable:Boolean,composed:Boolean,node:HTML Element}"
+            }
+          ],
+          "return": {
+            "type": "Event",
+            "desc": "Custom event created based on the parameters"
+          },
+          "inheritedFrom": "OECommonMixin"
+        },
+        {
           "name": "connectedCallback",
           "description": "",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 251,
+              "line": 258,
               "column": 2
             },
             "end": {
-              "line": 280,
+              "line": 287,
               "column": 3
             }
           },
@@ -233,12 +434,12 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 283,
+              "line": 290,
               "column": 2
             },
             "end": {
-              "line": 283,
-              "column": 27
+              "line": 290,
+              "column": 26
             }
           },
           "metadata": {},
@@ -253,11 +454,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 290,
+              "line": 297,
               "column": 2
             },
             "end": {
-              "line": 310,
+              "line": 317,
               "column": 3
             }
           },
@@ -278,11 +479,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 315,
+              "line": 322,
               "column": 2
             },
             "end": {
-              "line": 327,
+              "line": 333,
               "column": 3
             }
           },
@@ -298,11 +499,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 333,
+              "line": 339,
               "column": 2
             },
             "end": {
-              "line": 335,
+              "line": 341,
               "column": 3
             }
           },
@@ -323,11 +524,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 341,
+              "line": 347,
               "column": 2
             },
             "end": {
-              "line": 344,
+              "line": 350,
               "column": 3
             }
           },
@@ -348,11 +549,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 346,
+              "line": 352,
               "column": 2
             },
             "end": {
-              "line": 348,
+              "line": 354,
               "column": 3
             }
           },
@@ -368,11 +569,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 358,
+              "line": 364,
               "column": 2
             },
             "end": {
-              "line": 384,
+              "line": 390,
               "column": 3
             }
           },
@@ -405,11 +606,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 392,
+              "line": 398,
               "column": 2
             },
             "end": {
-              "line": 430,
+              "line": 436,
               "column": 3
             }
           },
@@ -441,11 +642,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 438,
+              "line": 444,
               "column": 2
             },
             "end": {
-              "line": 448,
+              "line": 454,
               "column": 3
             }
           },
@@ -466,16 +667,37 @@
           }
         },
         {
+          "name": "importScreen",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 456,
+              "column": 2
+            },
+            "end": {
+              "line": 462,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "url"
+            }
+          ]
+        },
+        {
           "name": "handleRouteChange",
           "description": "On route change matches the current path with the list of routes fetched to find the matching route.\nThen creates and appends the element (if not already created) and selects the element within the target component.\nAdditionally data sent in the query parameter or saved on the state is set on the element.",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 455,
+              "line": 469,
               "column": 2
             },
             "end": {
-              "line": 633,
+              "line": 646,
               "column": 3
             }
           },
@@ -491,11 +713,11 @@
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 138,
+          "line": 145,
           "column": 0
         },
         "end": {
-          "line": 634,
+          "line": 647,
           "column": 1
         }
       },
@@ -508,11 +730,11 @@
           "description": "Route object obtained from app-location containing\npath,query parameter etc.",
           "sourceRange": {
             "start": {
-              "line": 158,
+              "line": 165,
               "column": 6
             },
             "end": {
-              "line": 161,
+              "line": 168,
               "column": 7
             }
           },
@@ -524,11 +746,11 @@
           "description": "Url from which the UIRoutes needs to be fetched ,\ndefaults to api call to UIRoutes model.",
           "sourceRange": {
             "start": {
-              "line": 167,
+              "line": 174,
               "column": 6
             },
             "end": {
-              "line": 173,
+              "line": 180,
               "column": 7
             }
           },
@@ -540,11 +762,11 @@
           "description": "",
           "sourceRange": {
             "start": {
-              "line": 175,
+              "line": 182,
               "column": 6
             },
             "end": {
-              "line": 177,
+              "line": 184,
               "column": 7
             }
           },
@@ -556,11 +778,11 @@
           "description": "'group' query parameter for fetching UIRoutes",
           "sourceRange": {
             "start": {
-              "line": 182,
+              "line": 189,
               "column": 6
             },
             "end": {
-              "line": 185,
+              "line": 192,
               "column": 7
             }
           },
@@ -572,11 +794,11 @@
           "description": "List of routes fetched.",
           "sourceRange": {
             "start": {
-              "line": 190,
+              "line": 197,
               "column": 6
             },
             "end": {
-              "line": 192,
+              "line": 199,
               "column": 7
             }
           },
@@ -588,11 +810,11 @@
           "description": "",
           "sourceRange": {
             "start": {
-              "line": 193,
+              "line": 200,
               "column": 6
             },
             "end": {
-              "line": 196,
+              "line": 203,
               "column": 7
             }
           },
@@ -604,11 +826,11 @@
           "description": "Active route",
           "sourceRange": {
             "start": {
-              "line": 201,
+              "line": 208,
               "column": 6
             },
             "end": {
-              "line": 208,
+              "line": 215,
               "column": 7
             }
           },
@@ -620,11 +842,11 @@
           "description": "Selected group name",
           "sourceRange": {
             "start": {
-              "line": 213,
+              "line": 220,
               "column": 6
             },
             "end": {
-              "line": 218,
+              "line": 225,
               "column": 7
             }
           },
@@ -636,11 +858,11 @@
           "description": "Ignore group property and fetch all Routes",
           "sourceRange": {
             "start": {
-              "line": 223,
+              "line": 230,
               "column": 6
             },
             "end": {
-              "line": 226,
+              "line": 233,
               "column": 7
             }
           },
