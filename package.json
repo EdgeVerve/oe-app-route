@@ -1,6 +1,6 @@
 {
   "name": "oe-app-route",
-  "version": "2.1.1",
+  "version": "2.3.0",
   "description": "Wrapper element used to select/import the content to display based on route change",
   "main": "oe-app-route.js",
   "scripts": {
@@ -11,9 +11,9 @@
   "dependencies": {
     "@polymer/app-route": "^3.0.2",
     "@polymer/polymer": "^3.1.0",
-    "oe-ajax": "git+http://evgit/oecloud.io/oe-ajax.git#master",
-    "oe-mixins": "git+http://evgit/oecloud.io/oe-mixins.git#master",
-    "oe-utils": "git+http://evgit/oecloud.io/oe-utils.git#master"
+    "oe-ajax": "git+http://evgit/oecloud.io/oe-ajax.git#2.2.0",
+    "oe-mixins": "git+http://evgit/oecloud.io/oe-mixins.git#2.3.0",
+    "oe-utils": "git+http://evgit/oecloud.io/oe-utils.git#2.3.0"
   },
   "devDependencies": {
     "@polymer/iron-component-page": "^4.0.1",
@@ -26,7 +26,7 @@
     "chai": "4.2.0",
     "fakerest": "2.1.0",
     "mocha": "5.2.0",
-    "oe-ui-forms": "git+http://evgit/oecloud.io/oe-ui-forms.git#master",
+    "oe-ui-forms": "git+http://evgit/oecloud.io/oe-ui-forms.git#2.3.0",
     "sinon": "7.2.3",
     "wct-mocha": "1.0.0"
   },
