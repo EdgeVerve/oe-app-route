@@ -1,6 +1,6 @@
 {
   "name": "oe-app-route",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Wrapper element used to select/import the content to display based on route change",
   "main": "oe-app-route.js",
   "scripts": {
